@@ -62,6 +62,46 @@ app.get('/largest', function (req, res) {
 	});
 });
 
+app.get('/largest/:date', function (req, res) {
+
+	var prevDate = new Date(req.params.date);
+	if (prevDate == 'Invalid Date') {
+		// return some error code, for now just return
+		return;
+	}
+	var futureDate = new Date(req.params.date);
+	prevDate.setDate(prevDate.getDate() - 1);
+	futureDate.setDate(futureDate.getDate() + 1);
+	
+	Mood.aggregate([
+		{	
+			"$match":
+			{
+				"createdAt" :
+				{
+					"$gt" : prevDate,
+					"$lt" : futureDate
+				}
+     		} 
+     	},
+	    { 
+	    	"$group":
+	    	{
+	        	"_id": "$hex",
+	        	"tag" : { $addToSet : "$tag" },
+	        	"freq": { "$sum": 1 },
+
+	    	}
+	    }, 
+	    {
+	    	"$sort" : { "freq" : -1 }	
+	    }
+	], function(err, moods) {
+		if (err) throw err;
+		res.json(moods);
+	});
+});
+
 app.post('/submit', function (req, res) {
 	
 	if (req.body.tag == null) return;
