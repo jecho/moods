@@ -1,5 +1,6 @@
 
 var Controller = React.createClass({
+
   loadMoodDataFromServer: function() {
     $.ajax({
       url: this.props.url,
@@ -13,29 +14,71 @@ var Controller = React.createClass({
       }.bind(this)
     });
   },
+
+  handleMoodSubmit: function(newUri) {
+    $.ajax({
+      url: newUri.uri,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+
   getInitialState: function() {
     return {data: []};
   },
+
   componentDidMount: function() {
     this.loadMoodDataFromServer();
     setInterval(this.loadCommentsFromServer, this.props.pollInterval);
   },
+
   render: function() {
     return (
       <div className="moodSlider">
-        <MoodList data={this.state.data} />
+        <MoodList onMoodSubmit={this.handleMoodSubmit} data={this.state.data} url={this.props.url} />
       </div>
     );
   }
 });
 
 var MoodList = React.createClass({
+  getInitialState: function() {
+    return {date: ''};
+  },
+
+  handleDateChange: function(e) {
+    this.setState({date: e.target.value});
+  },
+  
+  handleSubmit: function(e) {  
+    e.preventDefault();
+    var date = this.state.date.trim();
+    var uriDate = this.props.url + date;
+    this.props.onMoodSubmit({ uri: uriDate });
+  },
+
   render: function() {
     var moodArray = []; 
     moodArray.push(
       <div itemStyle={{ backgroundColor: '#a2d7c7' }}>
         <div className="content">Hello, world.</div>
       </div>)
+    moodArray.push(<div className="testScroller" itemStyle={{ backgroundColor: '#D49A6A' }}>
+        <form className="moodSelectorForm" onSubmit={this.handleSubmit}>
+          <select value={this.state.date} onChange={this.handleDateChange}>>
+            <option value="2016-04-20">2016-04-20</option>
+            <option value="2016-04-18">2016-04-18</option>
+            <option value="default">DEFAULT</option>
+          </select>
+          <br/>
+        <input type="submit" value="ENTER" />
+      </form></div>)
     this.props.data.map(function(mood, i) {
       return (
         moodArray.push(
@@ -66,6 +109,6 @@ var Mood = React.createClass({
 });
 
 ReactDOM.render(
-  <Controller url={config.MOOD_URI + config.MOOD_FREQUENCY} pollInterval={15000} />,
+  <Controller url={config.MOOD_URI + config.MOOD_FREQUENCY} />,
   document.getElementById('app')
 );
