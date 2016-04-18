@@ -1,3 +1,8 @@
+
+/*
+	endpoint for accessing database for front end client
+*/
+
 var express = require('express');
 var config = require('../config');
 
@@ -6,12 +11,33 @@ var app = express.Router();
 
 app.use(function(req, res, next) {
     // do logging
-    console.log('Something is happening.');
+    console.log('Incoming request.');
     next(); 
 });
 
 app.get('/all', function (req, res) {
 	Mood.find({}, function(err, moods) {
+		if (err) throw err;
+		res.json(moods);
+	});
+});
+
+app.get('/all/:date', function (req, res) {
+	var prevDate = new Date(req.params.date);
+	if (prevDate == 'Invalid Date') {
+		// return some error code, for now just return
+		return;
+	}
+	var futureDate = new Date(req.params.date);
+	prevDate.setDate(prevDate.getDate() - 1);
+	futureDate.setDate(futureDate.getDate() + 1);
+	Mood.find({
+		"createdAt" :
+		{
+			"$gt" : prevDate,
+			"$lt" : futureDate
+		}
+	}, function(err, moods) {
 		if (err) throw err;
 		res.json(moods);
 	});
