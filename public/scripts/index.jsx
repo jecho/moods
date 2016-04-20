@@ -35,7 +35,7 @@ var Controller = React.createClass({
 
   componentDidMount: function() {
     this.loadMoodDataFromServer();
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    setInterval(this.loadMoodDataFromServer, this.props.pollInterval);
   },
 
   render: function() {
@@ -110,6 +110,6 @@ var Mood = React.createClass({
 });
 
 ReactDOM.render(
-  <Controller url={config.MOOD_URI + config.MOOD_FREQUENCY} />,
+  <Controller url={config.MOOD_URI + config.MOOD_FREQUENCY} />, // pollInterval={2000}
   document.getElementById('app')
 );
