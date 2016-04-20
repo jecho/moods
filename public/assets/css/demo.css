@@ -6,6 +6,10 @@ body {
   font-family: 'Helvetica Neue', Helvetica, arial, sans-serif;
 }
 
+.drop_menu {
+  align-items: center;
+}
+
 .viewport-slider-item {
   align-items: center;
   color: #fff;
@@ -52,12 +56,16 @@ body {
 }
 
 .content {
-  font-size: 6em;
+  font-size: 5.6em;
   font-weight: bold;
   letter-spacing: -1px;
   margin: 0;
   margin-left: 10px;
   margin-right: 10px;
+  text-align:center;
+}
+
+.content-dropdown {
   text-align:center;
 }
 

@@ -10,6 +10,10 @@ body {
   font-family: 'Helvetica Neue', Helvetica, arial, sans-serif;
 }
 
+.abc {
+  text-align:center;
+}
+
 .viewport-slider-item {
   align-items: center;
   color: #fff;
