@@ -7,8 +7,8 @@ var req = require('request');
 	dirty script to generate some inputs
 */
 
-var someLength = 8000;
-var moods = ['angry', 'sad', 'queasy', 'lethargic', 'hopeful', 'drunk', 'complacent', 'happy'];
+var someLength = 12000;
+var moods = ['red', 'blue', 'green'];
 var submit_uri = 'http://192.168.1.141:3000/api/submit';
 var size = moods.length;
 

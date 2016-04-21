@@ -69,17 +69,16 @@ var MoodList = React.createClass({
       <div itemStyle={{ backgroundColor: '#a2d7c7' }}>
         <div className="content">Hello, world.</div>
       </div>)
-    moodArray.push(<div id="testScroller" itemStyle={{ backgroundColor: '#D49A6A' }}>
-      <div className="content">How distant <i>shall</i> we go?</div>
-        <div className="content-dropdown">
-        <form id="moodSelectorForm" onSubmit={this.handleSubmit}>
+    moodArray.push(<div className="testScroller" itemStyle={{ backgroundColor: '#D49A6A' }}>
+        <form className="moodSelectorForm" onSubmit={this.handleSubmit}>
           <select value={this.state.date} onChange={this.handleDateChange}>>
-            <option value="default">Default</option>
             <option value="2016-04-20">2016-04-20</option>
             <option value="2016-04-18">2016-04-18</option>
+            <option value="default">DEFAULT</option>
           </select>
-        <input type="submit" value="Teleport~!" />
-      </form></div></div>)
+          <br/>
+        <input type="submit" value="ENTER" />
+      </form></div>)
     this.props.data.map(function(mood, i) {
       return (
         moodArray.push(

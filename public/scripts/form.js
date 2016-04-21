@@ -82,16 +82,9 @@ var FormComponent = React.createClass({
           <option value="sad">Sad</option>
           <option value="angry">Angry</option>
           <option value="queasy">Queasy</option>
-          <option value="happy">Happy</option>
-          <option value="suprised">Suprised</option>
-          <option value="complacent">Complacent</option>
-          <option value="frustrated">Frustrated</option>
-          <option value="hopeful">Hopeful</option>
-          <option value="bored">Bored</option>
-          <option value="lethargic">Lethargic</option>
         </select>
         <br/>
-        <input type="submit" value="I want to light my inner fire..." />
+        <input type="submit" value="I want to tell the world I greatly feel..." />
       </form>
     );
   }
