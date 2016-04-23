@@ -1,4 +1,6 @@
 
+var moment = require('moment');
+
 var Controller = React.createClass({
 
   loadMoodDataFromServer: function() {
@@ -57,9 +59,16 @@ var MoodList = React.createClass({
   },
   
   handleSubmit: function(e) {  
-    e.preventDefault();
+    e.preventDefault(); 
+
     var date = this.state.date.trim();
-    var uriDate = this.props.url + date;
+    var uriDate;
+
+    if (date == 'default') 
+      uriDate = this.props.url;
+    else
+      uriDate = this.props.url + date;
+    
     this.props.onMoodSubmit({ uri: uriDate });
   },
 
@@ -70,15 +79,19 @@ var MoodList = React.createClass({
         <div className="content">Hello, world.</div>
       </div>)
     moodArray.push(<div className="testScroller" itemStyle={{ backgroundColor: '#D49A6A' }}>
-        <form className="moodSelectorForm" onSubmit={this.handleSubmit}>
-          <select value={this.state.date} onChange={this.handleDateChange}>>
-            <option value="2016-04-20">2016-04-20</option>
-            <option value="2016-04-18">2016-04-18</option>
-            <option value="default">DEFAULT</option>
-          </select>
-          <br/>
-        <input type="submit" value="ENTER" />
-      </form></div>)
+        <div className="content">
+          How distant shall you go?
+          <div className="dropdown_menu">
+            <form className="moodSelectorForm" onSubmit={this.handleSubmit}>
+              <select value={this.state.date} onChange={this.handleDateChange}>
+                <option value={moment().format('YYYY-MM-DD')}>Today</option>
+                <option value={moment().add(-1, 'days').format('YYYY-MM-DD')}>Yesterday</option>
+                <option value={moment().add(-5, 'days').format('YYYY-MM-DD')}>5 Seasons Ago</option>
+                <option value="default">DEFAULT</option>
+              </select>
+              <input type="submit" value="Tell us" />
+            </form>
+       </div></div></div>)
     this.props.data.map(function(mood, i) {
       return (
         moodArray.push(
