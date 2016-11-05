@@ -7,9 +7,9 @@ var req = require('request');
 	dirty script to generate some inputs
 */
 
-var someLength = 8000;
+var someLength = 4000;
 var moods = ['angry', 'sad', 'queasy', 'lethargic', 'hopeful', 'drunk', 'complacent', 'happy'];
-var submit_uri = 'http://192.168.1.141:3000/api/submit';
+var submit_uri = 'http://localhost:3000/api/submit';
 var size = moods.length;
 
 var i = 0;
@@ -26,7 +26,8 @@ while (i < someLength) {
 			submit_uri,
 			{ form: JSON.parse(data) },
 			function(err, res, body) {
-				if (!err && res.statusCode == 200) {
+				if (err && res.statusCode != 200) {
+					console.log('fail');
 			 	}	
 			}
 		);

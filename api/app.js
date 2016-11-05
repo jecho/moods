@@ -1,8 +1,14 @@
+var fs = require('fs');
+var https = require('https');
 var express = require('express');
 var bodyParser = require('body-parser');
 var database = require('./db');
 var config = require('./config');
 var app = express();
+var options = {
+   key  : fs.readFileSync('./certs/server.key'),
+   cert : fs.readFileSync('./certs/server.crt')
+};
 
 var mongo = require('./routes/api');
 
@@ -25,6 +31,6 @@ app.get('/home', function (req, res) {
 	res.send('Hello World!');
 });
 
-app.listen(3000, function () {
+https.createServer(options, app).listen(3000, function () {
   console.log('Example app listening on port ' + config.SERVER_PORT + '!');
 });

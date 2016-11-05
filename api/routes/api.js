@@ -64,14 +64,18 @@ app.get('/largest', function (req, res) {
 
 app.get('/largest/:date', function (req, res) {
 
+	console.log(req.params.date);
 	var prevDate = new Date(req.params.date);
 	if (prevDate == 'Invalid Date') {
 		// return some error code, for now just return
 		return;
 	}
+	console.log(prevDate);
 	var futureDate = new Date(req.params.date);
 	prevDate.setDate(prevDate.getDate() - 1);
+	console.log(prevDate);
 	futureDate.setDate(futureDate.getDate() + 1);
+	console.log(futureDate);
 	
 	Mood.aggregate([
 		{	
