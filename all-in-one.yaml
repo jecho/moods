@@ -43,7 +43,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: foxley-moods-api
+  name: moods-api
   labels:
     app: mongo
     tier: database
@@ -59,7 +59,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: foxley-moods-api
+  name: moods-api
 spec:
   replicas: 3
   template:
@@ -70,9 +70,46 @@ spec:
     spec:
       containers:
       - name: nodejs-moods-api
-        image: 696251787677.dkr.ecr.us-west-2.amazonaws.com/foxley/moods-api
+        image: 696251787677.dkr.ecr.us-west-2.amazonaws.com/foxley/moods-api:latest
         env:
         - name: GET_HOSTS_FROM
           value: dns
         ports:
         - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moods-frontend
+  labels:
+    app: frontend
+    tier: api
+spec:
+  type: LoadBalancer
+  ports:
+    # the port that this service should serve on
+  - port: 2000
+  selector:
+    app: frontend
+    tier: api
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: moods-frontend
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: api
+    spec:
+      containers:
+      - name: nodejs-moods-frontend
+        image: 696251787677.dkr.ecr.us-west-2.amazonaws.com/foxley/moods-frontend:latest
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        ports:
+        - containerPort: 2000
