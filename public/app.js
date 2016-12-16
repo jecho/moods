@@ -19,6 +19,15 @@ app.get('/home', function (req, res) {
 	res.send('Hello World!');
 });
 
+app.get('/api/:metad', function (req, res) {
+	res.writeHead(301,
+		{
+	  		Location: 'https://' + process.env.MOOD_URI + '/api/' + (req.params.metad)
+	  	}
+	);
+	res.end();
+})
+
 https.createServer(options, app).listen(config.CLIENT_PORT, function () {
 	console.log('Example app listening on port ' + config.CLIENT_PORT + '!');
 });

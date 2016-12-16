@@ -9,8 +9,9 @@
   "author": "Jecho Ricafrente",
   "license": "ISC",
   "dependencies": {
+    "babel-preset-react": "^6.16.0",
+    "babelify": "^7.3.0",
     "body-parser": "^1.15.0",
-    "browserify": "^13.0.1",
     "express": "^4.13.4",
     "mongoose": "^4.4.13"
   }

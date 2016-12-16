@@ -8,6 +8,8 @@ var database = mongoose.connect(
 		if (err) {
 			console.log('falied to connect.');
 		}
+		console.log('connected');
+		console.log(config.DATABASE_ADDR);
 });
 
 module.exports.database = database;

@@ -3,3 +3,4 @@
 *.enc.key
 *.key
 *.pem
+generate.js

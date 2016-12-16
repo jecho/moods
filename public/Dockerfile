@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:6
+FROM node:7.2.1-alpine
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -12,4 +12,4 @@ RUN npm install
 COPY . /usr/src/app
 
 EXPOSE 2000
-CMD [ "npm", "start" ]
+ENTRYPOINT [ "npm", "start" ]

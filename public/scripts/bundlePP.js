@@ -2,183 +2,130 @@
 
 var moment = require('moment');
 
-var Controller = React.createClass({
-  displayName: 'Controller',
+var Controller = React.createClass({displayName: "Controller",
 
-
-  loadMoodDataFromServer: function () {
+  loadMoodDataFromServer: function() {
     $.ajax({
       url: this.props.url,
       dataType: 'json',
       cache: false,
-      success: function (data) {
-        this.setState({ data: data });
+      success: function(data) {
+        this.setState({data: data});
       }.bind(this),
-      error: function (xhr, status, err) {
+      error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
   },
 
-  handleMoodSubmit: function (newUri) {
+  handleMoodSubmit: function(newUri) {
     $.ajax({
       url: newUri.uri,
       dataType: 'json',
       cache: false,
-      success: function (data) {
-        this.setState({ data: data });
+      success: function(data) {
+        this.setState({data: data});
       }.bind(this),
-      error: function (xhr, status, err) {
+      error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
   },
 
-  getInitialState: function () {
-    return { data: [] };
+  getInitialState: function() {
+    return {data: []};
   },
 
-  componentDidMount: function () {
+  componentDidMount: function() {
     this.loadMoodDataFromServer();
     setInterval(this.loadMoodDataFromServer, this.props.pollInterval);
   },
 
-  render: function () {
-    return React.createElement(
-      'div',
-      { className: 'moodSlider' },
-      React.createElement(MoodList, { onMoodSubmit: this.handleMoodSubmit, data: this.state.data, url: this.props.url })
+  render: function() {
+    return (
+      React.createElement("div", {className: "moodSlider"}, 
+        React.createElement(MoodList, {onMoodSubmit: this.handleMoodSubmit, data: this.state.data, url: this.props.url})
+      )
     );
   }
 });
 
-var MoodList = React.createClass({
-  displayName: 'MoodList',
-
-  getInitialState: function () {
-    return { date: '' };
+var MoodList = React.createClass({displayName: "MoodList",
+  getInitialState: function() {
+    return {date: ''};
   },
 
-  handleDateChange: function (e) {
-    this.setState({ date: e.target.value });
+  handleDateChange: function(e) {
+    this.setState({date: e.target.value});
   },
-
-  handleSubmit: function (e) {
-    e.preventDefault();
+  
+  handleSubmit: function(e) {  
+    e.preventDefault(); 
 
     var date = this.state.date.trim();
     var uriDate;
 
-    if (date == 'default') uriDate = this.props.url;else uriDate = this.props.url + date;
-
+    if (date == 'default') 
+      uriDate = this.props.url;
+    else
+      uriDate = this.props.url + date;
+    
     this.props.onMoodSubmit({ uri: uriDate });
   },
 
-  render: function () {
-    var moodArray = [];
-    moodArray.push(React.createElement(
-      'div',
-      { itemStyle: { backgroundColor: '#a2d7c7' } },
-      React.createElement(
-        'div',
-        { className: 'content' },
-        'Hello, world.'
-      )
-    ));
-    moodArray.push(React.createElement(
-      'div',
-      { className: 'testScroller', itemStyle: { backgroundColor: '#D49A6A' } },
-      React.createElement(
-        'div',
-        { className: 'content' },
-        'How distant shall you go?',
-        React.createElement(
-          'div',
-          { className: 'dropdown_menu' },
-          React.createElement(
-            'form',
-            { className: 'moodSelectorForm', onSubmit: this.handleSubmit },
-            React.createElement(
-              'select',
-              { value: this.state.date, onChange: this.handleDateChange },
-              React.createElement(
-                'option',
-                { value: moment().format('YYYY-MM-DD') },
-                'Today'
-              ),
-              React.createElement(
-                'option',
-                { value: moment().add(-1, 'days').format('YYYY-MM-DD') },
-                'Yesterday'
-              ),
-              React.createElement(
-                'option',
-                { value: moment().add(-5, 'days').format('YYYY-MM-DD') },
-                '5 Seasons Ago'
-              ),
-              React.createElement(
-                'option',
-                { value: 'default' },
-                'DEFAULT'
-              )
-            ),
-            React.createElement('input', { type: 'submit', value: 'Tell us' })
-          )
-        )
-      )
-    ));
-    this.props.data.map(function (mood, i) {
-      return moodArray.push(React.createElement(
-        'div',
-        { key: i, itemStyle: { backgroundColor: mood._id } },
-        React.createElement(
-          'div',
-          { className: 'content' },
-          'Most are typically ',
-          React.createElement(
-            'i',
-            null,
-            mood.tag
-          ),
-          ' today, right?'
-        ),
-        React.createElement('br', null),
-        React.createElement(
-          'div',
-          { className: 'content' },
-          mood.freq,
-          '!'
-        )
-      ));
+  render: function() {
+    var moodArray = []; 
+    moodArray.push(
+      React.createElement("div", {itemStyle: { backgroundColor: '#a2d7c7'}}, 
+        React.createElement("div", {className: "content"}, "Hello, world.")
+      ))
+    moodArray.push(React.createElement("div", {className: "testScroller", itemStyle: { backgroundColor: '#D49A6A'}}, 
+        React.createElement("div", {className: "content"}, 
+          "How distant shall you go?", 
+          React.createElement("div", {className: "dropdown_menu"}, 
+            React.createElement("form", {className: "moodSelectorForm", onSubmit: this.handleSubmit}, 
+              React.createElement("select", {value: this.state.date, onChange: this.handleDateChange}, 
+                React.createElement("option", {value: moment().format('YYYY-MM-DD')}, "Today"), 
+                React.createElement("option", {value: moment().add(-1, 'days').format('YYYY-MM-DD')}, "Yesterday"), 
+                React.createElement("option", {value: moment().add(-5, 'days').format('YYYY-MM-DD')}, "5 Seasons Ago"), 
+                React.createElement("option", {value: "default"}, "DEFAULT")
+              ), 
+              React.createElement("input", {type: "submit", value: "Tell us"})
+            )
+       ))))
+    this.props.data.map(function(mood, i) {
+      return (
+        moodArray.push(
+          React.createElement("div", {key: i, itemStyle: { backgroundColor: mood._id}}, 
+            React.createElement("div", {className: "content"}, "Most are typically ", React.createElement("i", null, mood.tag), " today, right?"), 
+            React.createElement("br", null), 
+            React.createElement("div", {className: "content"}, mood.freq, "!")
+          ))
+        );
     });
 
-    return React.createElement(
-      ViewportSlider,
-      null,
-      moodArray
-    );
-  }
-});
-
-var Mood = React.createClass({
-  displayName: 'Mood',
-
-  render: function () {
-    return React.createElement(
-      'div',
-      { key: this.props.data._id, itemStyle: { backgroundColor: this.props.data } },
-      React.createElement(
-        'div',
-        { className: 'content' },
-        'Hello, world. ',
-        this.props.data
+    return (
+      React.createElement(ViewportSlider, null, 
+        moodArray
       )
     );
   }
 });
 
-ReactDOM.render(React.createElement(Controller, { url: config.MOOD_URI + config.MOOD_FREQUENCY, pollInterval: 10000 }), // pollInterval={2000}
-document.getElementById('app'));
+var Mood = React.createClass({displayName: "Mood",
+  render: function() {
+    return (
+      React.createElement("div", {key: this.props.data._id, itemStyle: { backgroundColor: this.props.data}}, 
+        React.createElement("div", {className: "content"}, "Hello, world. ", this.props.data)
+      )
+    );
+  }
+});
+
+ReactDOM.render(
+  React.createElement(Controller, {url: config.MOOD_URI + config.MOOD_FREQUENCY}), // pollInterval={2000}
+  document.getElementById('app')
+);
 
 },{"moment":2}],2:[function(require,module,exports){
 //! moment.js

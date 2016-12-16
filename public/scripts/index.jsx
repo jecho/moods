@@ -122,6 +122,6 @@ var Mood = React.createClass({
 });
 
 ReactDOM.render(
-  <Controller url={config.MOOD_URI + config.MOOD_FREQUENCY} />, // pollInterval={2000}
+  <Controller url={config.MOOD_URI + config.MOOD_FREQUENCY} pollInterval={10000} />, // pollInterval={2000}
   document.getElementById('app')
 );
